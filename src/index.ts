@@ -1,16 +1,30 @@
 import { io } from "socket.io-client";
-import { createPeerAnswer } from "./utils/createPeerAnswer";
-import { sendSdpToPeer } from "./utils/sendSdptoPeer";
-const socket = io("http://localhost:4000/");
+import { stunConfig } from "./config";
+const socket = io(import.meta.env.VITE_SOCKET_PORT);
 
-const pc = new RTCPeerConnection({
-  iceServers: [
-    {
-      urls: import.meta.env.VITE_STUN_SERVER,
-    },
-  ],
-});
+const pc = new RTCPeerConnection(stunConfig)
 
-socket.on("response_sdp", async (sdp) => await createPeerAnswer(pc, sdp, socket));
+window.onload = () => {
+  socket.emit('request_connection')
+}
 
-window.addEventListener("load", () => sendSdpToPeer(socket, pc));
+socket.on("new_connection", () => {
+  pc.createOffer()
+  .then(async offer => {
+    await pc.setLocalDescription(offer)
+    socket.emit('send_offer', offer)
+  })
+})
+
+socket.on("receive_offer", async (offer) => {
+  await pc.setRemoteDescription(offer as RTCSessionDescription)
+
+  const answer = await pc.createAnswer()
+  await pc.setLocalDescription(answer)
+
+  socket.emit("send_answer", pc.localDescription)
+})
+
+socket.on('receive_answer', (answer) => {
+  pc.setRemoteDescription(answer)
+})

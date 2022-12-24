@@ -21,9 +21,15 @@ app.get("/", (_, res) => {
 
 // Get SDP string and give other peers response
 io.on("connection", (socket) => {
-  socket.on("request_sdp", (sdp) => {
-    socket.broadcast.emit("response_sdp", sdp);
-  });
+  socket.on("request_connection", () => {
+    socket.broadcast.emit('new_connection')
+  })
+  socket.on('send_offer', (offer) => {
+    socket.broadcast.emit("receive_offer", offer)
+  })
+  socket.on('send_answer', (answer) => {
+    socket.broadcast.emit('receive_answer', answer)
+  })
 });
 
 const port = 4000;
