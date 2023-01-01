@@ -21,15 +21,18 @@ app.get("/", (_, res) => {
 
 // Get SDP string and give other peers response
 io.on("connection", (socket) => {
-  socket.on("request_connection", () => {
-    socket.broadcast.emit('new_connection')
-  })
-  socket.on('send_offer', (offer) => {
-    socket.broadcast.emit("receive_offer", offer)
-  })
-  socket.on('send_answer', (answer) => {
-    socket.broadcast.emit('receive_answer', answer)
-  })
+  socket.on("send_join", () => {
+    socket.broadcast.emit("join");
+  });
+  socket.on("send_offer", (offer) => {
+    socket.broadcast.emit("offer", offer);
+  });
+  socket.on("send_answer", (answer) => {
+    socket.broadcast.emit("answer", answer);
+  });
+  socket.on("send_candidate", (candidate) => {
+    socket.broadcast.emit("candidate", candidate);
+  });
 });
 
 const port = 4000;
