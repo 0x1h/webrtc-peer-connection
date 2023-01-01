@@ -5,3 +5,10 @@ export const stunConfig = {
     },
   ],
 }
+
+export const cameraConfigs = {
+  audio: false,
+  video: {
+   facingMode: 'user'
+  }
+};

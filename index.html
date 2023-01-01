@@ -1,12 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
+    <link rel="stylesheet" href="style.css">
+    <title>WebRTC</title>
   </head>
   <body style="background-color: #2b2b2b;">
-    <script type="module" src="./src/index.ts"></script>
+    <div class="container">
+      <div class="video-wrapper">
+        <video autoplay class="me"></video>
+        <video autoplay class="peer"></video>
+      </div>
+      <div class="actions-banner">
+        <button class="btn start-camera">Video</button>
+        <button class="btn end-camera">End</button>
+      </div>
+    </div>
   </body>
+  <!-- <script type="module" src="./src/index.ts"></script> -->
+  <script type="module" src="./src"></script>
 </html>
