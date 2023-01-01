@@ -53,10 +53,9 @@ const makeCall = async () => {
 
 const startVideoCall = async () => {
   console.log("[Local] Sent Join Request");
-  localStream = await navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: true,
-  });
+  localStream = await navigator.mediaDevices.getDisplayMedia({
+    video: true
+  })
   localVideo.srcObject = localStream;
 
   startButton.disabled = true;
